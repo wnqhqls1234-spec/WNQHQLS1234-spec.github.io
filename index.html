@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Atomy Hub</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex justify-center min-h-screen">
+
+  <main class="w-full max-w-md bg-white shadow-xl min-h-screen flex flex-col p-6">
+    
+    <!-- 언어 선택 바 (영어가 기본 선택) -->
+    <div class="flex justify-end mb-4">
+      <select id="langSelect" onchange="changeLang(this.value)" class="text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 outline-none cursor-pointer">
+        <option value="en" selected>English (Global)</option>
+        <option value="ko">한국어 (KR)</option>
+        <option value="ja">日本語 (JP)</option>
+      </select>
+    </div>
+
+    <!-- 프로필 영역 (내 사진 적용) -->
+    <section class="text-center mb-6">
+      <div class="w-24 h-24 mx-auto rounded-full overflow-hidden shadow-md mb-3 border-2 border-slate-100 flex items-center justify-center bg-slate-100">
+        <!-- 동일 폴더에 profile.jpg를 두시거나 이미지 링크를 넣으세요 -->
+        <img 
+          src="profile.jpg" 
+          alt="Profile Picture" 
+          class="w-full h-full object-cover"
+          onerror="this.onerror=null; this.src='https://via.placeholder.com/150?text=Profile';"
+        />
+      </div>
+      <h1 class="text-xl font-bold text-slate-900" id="profileTitle">Global Atomy Partner</h1>
+      <p class="text-sm text-slate-500 mt-1" id="profileSub">Absolute Quality, Absolute Price | Free Global Membership</p>
+    </section>
+
+    <!-- 후원인 번호 카드 (Sponsor ID) -->
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 text-center">
+      <p class="text-xs font-semibold text-blue-700 uppercase" id="sponsorLabel">Required Sponsor ID for Sign-Up</p>
+      <div class="flex items-center justify-center gap-2 mt-1">
+        <!-- 본인의 애터미 회원번호로 변경해주세요 -->
+        <span class="text-lg font-extrabold text-blue-900 tracking-wider" id="sponsorId">S12345678</span>
+        <button onclick="copySponsorId()" class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1 rounded-md transition active:scale-95">
+          <span id="btnCopy">Copy</span>
+        </button>
+      </div>
+      <p class="text-[11px] text-blue-600 mt-1" id="sponsorNotice">*Please input this Sponsor ID during registration.</p>
+    </div>
+
+    <!-- 주요 액션 버튼 (Link in Bio) -->
+    <section class="space-y-3 mb-8">
+      
+      <!-- 1. [신규] 애터미 브랜드 소개 링크 -->
+      <a href="https://global.atomy.com" target="_blank" class="flex items-center justify-between w-full p-4 bg-sky-50 border border-sky-200 hover:bg-sky-100 text-sky-950 rounded-xl font-medium transition shadow-sm">
+        <span class="flex items-center gap-3">
+          <i class="fa-solid fa-circle-info text-sky-600 text-lg"></i>
+          <span id="btnAbout">About Atomy (Brand Story)</span>
+        </span>
+        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-sky-500"></i>
+      </a>
+
+      <!-- 2. 글로벌(해외) 무료 회원가입 -->
+      <a href="https://join.atomy.com/global/main" target="_blank" class="flex items-center justify-between w-full p-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow font-medium transition">
+        <span class="flex items-center gap-3">
+          <i class="fa-solid fa-user-plus text-lg"></i>
+          <span id="btnJoinGlobal">Join Atomy Globally (Free)</span>
+        </span>
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </a>
+
+      <!-- 3. 국내(한국 거주자) 회원가입 -->
+      <a href="https://kr.atomy.com/join/memberGate" target="_blank" class="flex items-center justify-between w-full p-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl shadow font-medium transition">
+        <span class="flex items-center gap-3">
+          <i class="fa-solid fa-flag text-lg"></i>
+          <span id="btnJoinKr">Sign-Up for Korea Residents</span>
+        </span>
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </a>
+
+      <!-- 4. 공식 쇼핑몰 바로가기 -->
+      <a href="https://global.atomy.com" target="_blank" class="flex items-center justify-between w-full p-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 rounded-xl shadow-sm font-medium transition">
+        <span class="flex items-center gap-3">
+          <i class="fa-solid fa-bag-shopping text-lg text-slate-700"></i>
+          <span id="btnShop">Visit Official Shopping Mall</span>
+        </span>
+        <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+      </a>
+
+      <!-- 5. 1:1 상담 문의 (WhatsApp) -->
+      <!-- 해외 타겟이므로 WhatsApp이 가장 전환율이 높습니다 -->
+      <a href="https://wa.me/YOUR_PHONE_NUMBER" target="_blank" class="flex items-center justify-between w-full p-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow font-medium transition">
+        <span class="flex items-center gap-3">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <span id="btnChat">Chat on WhatsApp (1:1 Support)</span>
+        </span>
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </a>
+    </section>
+
+    <!-- 베스트셀러 제품 소개 -->
+    <section class="mb-6">
+      <h2 class="text-sm font-bold text-slate-700 mb-3" id="productTitle">Featured Bestsellers</h2>
+      <div class="grid grid-cols-2 gap-3 text-left">
+        <div class="border border-slate-200 rounded-xl p-3 bg-slate-50">
+          <div class="h-20 bg-slate-200 rounded-lg flex items-center justify-center text-xs text-slate-400 mb-2">Image</div>
+          <p class="font-bold text-sm text-slate-800">HemoHIM</p>
+          <p class="text-xs text-slate-500 mt-0.5" id="p1Desc">Patented immune support supplement</p>
+        </div>
+        <div class="border border-slate-200 rounded-xl p-3 bg-slate-50">
+          <div class="h-20 bg-slate-200 rounded-lg flex items-center justify-center text-xs text-slate-400 mb-2">Image</div>
+          <p class="font-bold text-sm text-slate-800">Absolute Skincare</p>
+          <p class="text-xs text-slate-500 mt-0.5" id="p2Desc">Premium anti-aging skincare set</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="mt-auto pt-6 text-center text-xs text-slate-400 border-t border-slate-100">
+      <p>Independent Atomy Distributor</p>
+    </footer>
+
+  </main>
+
+  <!-- 다국어 텍스트 스크립트 -->
+  <script>
+    const translations = {
+      en: {
+        profileTitle: "Global Atomy Partner",
+        profileSub: "Absolute Quality, Absolute Price | Free Global Membership",
+        sponsorLabel: "Required Sponsor ID for Sign-Up",
+        sponsorNotice: "*Please input this Sponsor ID during registration.",
+        btnCopy: "Copy",
+        btnAbout: "About Atomy (Brand Story)",
+        btnJoinGlobal: "Join Atomy Globally (Free)",
+        btnJoinKr: "Sign-Up for Korea Residents",
+        btnShop: "Visit Official Shopping Mall",
+        btnChat: "Chat on WhatsApp (1:1 Support)",
+        productTitle: "Featured Bestsellers",
+        p1Desc: "Patented immune support supplement",
+        p2Desc: "Premium anti-aging skincare set",
+        copied: "Sponsor ID copied to clipboard!"
+      },
+      ko: {
+        profileTitle: "글로벌 애터미 파트너",
+        profileSub: "절대품질 절대가격 | 전 세계 무료 회원가입",
+        sponsorLabel: "회원가입 시 후원인 번호 입력 필수",
+        sponsorNotice: "*가입 단계에서 위 번호를 입력하셔야 등록이 완료됩니다.",
+        btnCopy: "복사",
+        btnAbout: "애터미 브랜드 소개 (About Atomy)",
+        btnJoinGlobal: "글로벌(해외) 회원가입",
+        btnJoinKr: "한국 거주자 회원가입 바로가기",
+        btnShop: "공식 쇼핑몰 바로가기",
+        btnChat: "1:1 가입/상담 문의 (WhatsApp)",
+        productTitle: "대표 베스트셀러",
+        p1Desc: "면역기능 개선 건강기능식품",
+        p2Desc: "프리미엄 안티에이징 스킨케어",
+        copied: "후원인 번호가 복사되었습니다!"
+      },
+      ja: {
+        profileTitle: "アトミ グローバルパートナー",
+        profileSub: "絶対品質・絶対価格 | 全世界 無料会員登録",
+        sponsorLabel: "登録時に必要なスポンサーID",
+        sponsorNotice: "*会員登録画面でこちらのIDをご入力ください。",
+        btnCopy: "コピー",
+        btnAbout: "アトミについて (ブランド紹介)",
+        btnJoinGlobal: "グローバル 無料会員登録",
+        btnJoinKr: "韓国在住者 会員登録",
+        btnShop: "公式オンラインモールへ",
+        btnChat: "お問い合わせ (WhatsApp)",
+        productTitle: "人気おすすめ製品",
+        p1Desc: "免疫力向上サプリメント",
+        p2Desc: "高機能エイ징ケア セット",
+        copied: "スポンサーIDをコピーしました！"
+      }
+    };
+
+    function changeLang(lang) {
+      const data = translations[lang];
+      document.getElementById('profileTitle').innerText = data.profileTitle;
+      document.getElementById('profileSub').innerText = data.profileSub;
+      document.getElementById('sponsorLabel').innerText = data.sponsorLabel;
+      document.getElementById('sponsorNotice').innerText = data.sponsorNotice;
+      document.getElementById('btnCopy').innerText = data.btnCopy;
+      document.getElementById('btnAbout').innerText = data.btnAbout;
+      document.getElementById('btnJoinGlobal').innerText = data.btnJoinGlobal;
+      document.getElementById('btnJoinKr').innerText = data.btnJoinKr;
+      document.getElementById('btnShop').innerText = data.btnShop;
+      document.getElementById('btnChat').innerText = data.btnChat;
+      document.getElementById('productTitle').innerText = data.productTitle;
+      document.getElementById('p1Desc').innerText = data.p1Desc;
+      document.getElementById('p2Desc').innerText = data.p2Desc;
+    }
+
+    function copySponsorId() {
+      const id = document.getElementById('sponsorId').innerText;
+      const currentLang = document.getElementById('langSelect').value;
+      navigator.clipboard.writeText(id).then(() => {
+        alert(translations[currentLang].copied);
+      });
+    }
+  </script>
+</body>
+</html>
